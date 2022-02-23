@@ -43,7 +43,7 @@ func NewLibrary(path string) (*Library, error) {
 func (l *Library) Search(title string) *Book {
 	//search for a book in the library
 	for _, book := range l.Books {
-		if strings.Contains(book.Title(), title) {
+		if strings.Contains(strings.ToLower(book.Title()), strings.ToLower(title)) {
 			return book
 		}
 	}

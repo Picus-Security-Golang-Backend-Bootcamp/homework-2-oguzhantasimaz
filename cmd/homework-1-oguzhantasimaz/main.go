@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/internal/models"
 )
@@ -27,11 +28,12 @@ func main() {
 		args = args[1:]
 		if args[0] == "search" {
 			if len(args) >= 2 {
-				book := library.Search(args[1])
+				fmt.Printf("\nAranan kitap: %s ", strings.Join(args[1:], " "))
+				book := library.Search(strings.Join(args[1:], " "))
 				if book != nil {
-					fmt.Println(book.Title())
+					fmt.Printf("\nBulunan kitap: %s\n", book.Title())
 				} else {
-					fmt.Println("Bu kitap bulunamadı")
+					fmt.Println("\nBu kitap bulunamadı")
 				}
 			}
 		} else if args[0] == "list" {

@@ -11,8 +11,8 @@ type Book struct {
 	isbn       int
 	pageCount  int
 	price      float64
-	author     *Author
 	isDeleted  bool
+	author     *Author
 }
 
 //Get title of the book
@@ -73,6 +73,11 @@ func (b *Book) SetStockCount(count int) {
 //Set isDeleted of the book
 func (b *Book) SetIsDeleted(isDeleted bool) {
 	b.isDeleted = isDeleted
+}
+
+//Create a new book
+func NewBook(id int, title string, stockCode string, stockCount int, isbn int, pageCount int, price float64, isDeleted bool, author *Author) *Book {
+	return &Book{id, title, stockCode, stockCount, isbn, pageCount, price, isDeleted, author}
 }
 
 //Return all information of the book as a string

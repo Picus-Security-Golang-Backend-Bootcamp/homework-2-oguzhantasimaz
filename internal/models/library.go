@@ -1,13 +1,8 @@
 package models
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strings"
-
-	"github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/utilites"
 )
 
 // Library struct
@@ -15,40 +10,10 @@ type Library struct {
 	Books []*Book
 }
 
-func NewLibrary(path string) (*Library, error) {
-	//read books.txt from assets folder and create a new library
-	books := []*Book{}
-	file, err := os.Open(path)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//read file line by line
-	//and create a new book for each line
-	//and add it to the books slice
-	counter := 1
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		books = append(books, &Book{
-			id:         counter,
-			title:      scanner.Text(),
-			stockCode:  utilites.RandomString(5),
-			stockCount: int(utilites.RandomInt(100)),
-			isbn:       int(utilites.RandomInt(9999)),
-			pageCount:  int(utilites.RandomInt(1000)),
-			price:      float64(utilites.RandomInt(1000)),
-			author:     &Author{name: utilites.RandomString(10), surname: utilites.RandomString(10)},
-			isDeleted:  false,
-		})
-		counter++
-	}
-
-	//close the file after function ends
-	defer file.Close()
-
+func NewLibrary(bookList []*Book) (*Library, error) {
+	//create a new library
 	return &Library{
-		Books: books,
+		Books: bookList,
 	}, nil
 }
 

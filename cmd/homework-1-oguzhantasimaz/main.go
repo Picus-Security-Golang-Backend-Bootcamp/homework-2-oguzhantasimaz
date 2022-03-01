@@ -8,17 +8,42 @@ import (
 	"strconv"
 
 	"github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/internal/models"
+	"github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/utilites"
 )
+
+var books []*models.Book
+
+func init() {
+	// create books
+
+	bookTitleList := [5]string{"Go Programming", "Python Programming", "Java Programming", "C Programming", "C++ Programming"}
+	authorNameList := [5]string{"Harry", "Hermonie", "Jhon", "Peter", "Paul"}
+	authorSurnameList := [5]string{"Potter", "Granger", "Doe", "Smith", "Jones"}
+
+	for i := 0; i < 5; i++ {
+		book := models.NewBook(
+			i,
+			bookTitleList[i],
+			utilites.RandomString(5),
+			utilites.RandomInt(100),
+			utilites.RandomInt(9999),
+			utilites.RandomInt(1000),
+			float64(utilites.RandomInt(1000)),
+			false,
+			models.NewAuthor(authorNameList[i], authorSurnameList[i]),
+		)
+		books = append(books, book)
+	}
+
+}
 
 func main() {
 	args := os.Args
-	// dirPath, err := os.Getwd()
-	//create library from books.txt
-	library, err := models.NewLibrary("../../assets/books.txt")
+	library, err := models.NewLibrary(books)
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	// read args if search or list
 
 	if len(args) == 1 {
 		projectName := path.Base(args[0])

@@ -2,8 +2,10 @@ package utilites
 
 import (
 	"crypto/rand"
-	"fmt"
+	"log"
 	"math/big"
+	"strconv"
+	"strings"
 )
 
 //random string generator with cryptorand
@@ -13,7 +15,7 @@ func RandomString(n int) string {
 	for i := range b {
 		value, err := rand.Int(rand.Reader, big.NewInt(int64(len(letterRunes))))
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
 		b[i] = letterRunes[value.Int64()]
 	}
@@ -24,7 +26,27 @@ func RandomString(n int) string {
 func RandomInt(max int64) int {
 	value, err := rand.Int(rand.Reader, big.NewInt(max))
 	if err != nil {
-		fmt.Print(err)
+		log.Fatal(err)
 	}
 	return int(value.Int64())
+}
+
+//StrContains checks if a string contains a substring with case insensitive
+func StrContains(s, substr string) bool {
+	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
+}
+
+//IsInt checks if a string is an integer
+func IsInt(s string) bool {
+	_, err := strconv.Atoi(s)
+	return err == nil
+}
+
+//String to int conversion
+func StringToInt(s string) int {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return i
 }

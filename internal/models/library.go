@@ -2,7 +2,8 @@ package models
 
 import (
 	"fmt"
-	"strings"
+
+	utilites "github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/utilities"
 )
 
 // Library struct
@@ -17,10 +18,10 @@ func NewLibrary(bookList []*Book) (*Library, error) {
 	}, nil
 }
 
-//list all books
+//List all books
 func (l *Library) List() {
 	for _, book := range l.Books {
-		fmt.Println(*book)
+		fmt.Print("\n" + book.GetBookInformation() + "\n")
 	}
 }
 
@@ -28,22 +29,29 @@ func (l *Library) List() {
 func (l *Library) Buy(id int, count int) {
 	//search for a book in the library
 	for _, book := range l.Books {
-		if book.ID() == id {
+		if book.id == id {
 			//Check if book is deleted
-			if !book.IsDeleted() {
+			if !book.isDeleted {
 				//check if stock count is greater than 0
-				if book.StockCount() > 0 {
-					//if count is lesser than stock count
-					//then set stock count to minus the count
-					if count < book.StockCount() {
-						book.SetStockCount(book.StockCount() - count)
-						fmt.Println("You have bought", count, "copies of", book.Title())
-						return
+				if book.stockCount > 0 {
+					//if count is less than 1 then return error
+					if count > 0 {
+
+						//if count is lesser than stock count
+						//then set stock count to minus the count
+						if count < book.stockCount {
+							book.SetStockCount(book.stockCount - count)
+							fmt.Println("You have bought", count, "copies of", book.title)
+							return
+						} else {
+							//if count is greater than stock count
+							//then message that you have bought all the books
+							book.SetStockCount(0)
+							fmt.Println("You have bought all the books of", book.title)
+							return
+						}
 					} else {
-						//if count is greater than stock count
-						//then message that you have bought all the books
-						book.SetStockCount(0)
-						fmt.Println("You have bought all the books of", book.Title())
+						fmt.Println("Count should be greater than 0")
 						return
 					}
 				} else {
@@ -51,7 +59,7 @@ func (l *Library) Buy(id int, count int) {
 					return
 				}
 			} else {
-				fmt.Println("Book is deleted")
+				fmt.Println("Sorry book is deleted, you can't buy it")
 				return
 			}
 		}
@@ -64,13 +72,13 @@ func (l *Library) Buy(id int, count int) {
 func (l *Library) Delete(id int) {
 	//search for a book in the library
 	for _, book := range l.Books {
-		if book.ID() == id {
+		if book.id == id {
 			//check if book is deleted
-			if !book.IsDeleted() {
+			if !book.isDeleted {
 				//if book is found
 				//then set isDeleted to true
 				book.SetIsDeleted(true)
-				fmt.Println("Book", book.Title(), "is deleted")
+				fmt.Println("Book", book.title, "is deleted")
 				return
 			} else {
 				fmt.Println("Book is already deleted")
@@ -83,32 +91,30 @@ func (l *Library) Delete(id int) {
 }
 
 //Search book by stockCode, isbn, title
-func (l *Library) SearchBy(value interface{}) *Book {
+func (l *Library) SearchByString(value string) *Book {
 	//search for a book in the library
-	switch v := value.(type) {
-	case string:
-		for _, book := range l.Books {
-			if strings.Contains(strings.ToLower(book.StockCode()), strings.ToLower(value.(string))) || strings.Contains(strings.ToLower(book.Title()), strings.ToLower(value.(string))) || strings.Contains(strings.ToLower(book.AuthorName()), strings.ToLower(value.(string))) {
-				if book.isDeleted == false {
-					return book
-				} else {
-					fmt.Println("You found a deleted book")
-				}
+	for _, book := range l.Books {
+		if utilites.StrContains(book.stockCode, value) || utilites.StrContains(book.title, value) || utilites.StrContains(book.AuthorName(), value) {
+			if book.isDeleted == false {
+				return book
+			} else {
+				fmt.Println("You found a deleted book")
 			}
 		}
-	case int:
-		for _, book := range l.Books {
-			if book.ISBN() == value.(int) {
-				if book.isDeleted == false {
-					return book
-				} else {
-					fmt.Println("You found a deleted book")
-				}
+	}
+	return nil
+}
+
+//Search book by integer id, isbn
+func (l *Library) SearchByInt(value int) *Book {
+	for _, book := range l.Books {
+		if book.isbn == value || book.id == value {
+			if book.isDeleted == false {
+				return book
+			} else {
+				fmt.Println("You found a deleted book")
 			}
 		}
-	default:
-		fmt.Printf("\nInvalid search type %T", v)
-		return nil
 	}
 	return nil
 }

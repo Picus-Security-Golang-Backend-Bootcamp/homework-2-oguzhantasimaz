@@ -7,8 +7,8 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/internal/models"
-	utilites "github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/utilities"
+	"github.com/Picus-Security-Golang-Backend-Bootcamp/homework-2-oguzhantasimaz/internal/models"
+	utilites "github.com/Picus-Security-Golang-Backend-Bootcamp/homework-2-oguzhantasimaz/utilities"
 )
 
 var books []*models.Book

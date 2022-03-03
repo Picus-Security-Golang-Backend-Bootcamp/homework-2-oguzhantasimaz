@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	utilites "github.com/Picus-Security-Golang-Backend-Bootcamp/homework-1-oguzhantasimaz/utilities"
+	utilites "github.com/Picus-Security-Golang-Backend-Bootcamp/homework-2-oguzhantasimaz/utilities"
 )
 
 // Library struct
